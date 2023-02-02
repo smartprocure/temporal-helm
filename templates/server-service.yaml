@@ -16,6 +16,9 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.server.frontend.service.type }}
+  {{- if eq .Values.server.frontend.service.type "ClusterIP" }}
+  clusterIP: {{ .Values.server.frontend.service.clusterIP }}
+  {{- end }}
   ports:
     - port: {{ .Values.server.frontend.service.port }}
       targetPort: rpc

@@ -13,6 +13,9 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
 spec:
   type: ClusterIP 
+  {{- if eq .Values.admintools.service.type "ClusterIP" }}
+  clusterIP: {{ .Values.admintools.service.clusterIP }}
+  {{- end }}
   ports:
     - port: 22
       targetPort: 22

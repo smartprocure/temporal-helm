@@ -20,6 +20,9 @@ spec:
   loadBalancerIP: {{.}}
     {{- end }}
   type: {{ .Values.web.service.type }}
+  {{- if eq .Values.web.service.type "ClusterIP" }}
+  clusterIP: {{ .Values.web.service.clusterIP }}
+  {{- end }}
   ports:
     - port: {{ .Values.web.service.port }}
       targetPort: http
