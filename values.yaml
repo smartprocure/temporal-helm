@@ -161,7 +161,6 @@ server:
     service:
       annotations: {} # Evaluated as template
       type: ClusterIP
-      clusterIP: None
       port: 7233
     metrics:
       annotations:
