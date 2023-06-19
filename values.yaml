@@ -18,10 +18,10 @@ serviceAccount:
 
 server:
   enabled: true
-  sidecarContainers:
+  sidecarContainers: {}
   image:
     repository: temporalio/server
-    tag: 1.20.1
+    tag: 1.20.3
     pullPolicy: IfNotPresent
 
   # Global default settings (can be overridden per service)
@@ -31,6 +31,8 @@ server:
     # Use this if you installed Prometheus from a Helm chart.
     annotations:
       enabled: true
+    # Additional tags to be added to Prometheus metrics
+    tags: {}
     # Enable Prometheus ServiceMonitor
     # Use this if you installed the Prometheus Operator (https://github.com/coreos/prometheus-operator).
     serviceMonitor:
@@ -63,6 +65,8 @@ server:
       timerType: histogram
   podAnnotations: {}
   podLabels: {}
+  secretLabels: {}
+  secretAnnotations: {}
   resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -79,6 +83,10 @@ server:
   affinity: {}
   additionalVolumes: []
   additionalVolumeMounts: []
+  additionalEnv: []
+  securityContext:
+    fsGroup: 1000
+    runAsUser: 1000
 
   config:
     logLevel: "debug,info"
@@ -157,7 +165,6 @@ server:
           #   tx_isolation: 'READ-COMMITTED'
 
   frontend:
-    # replicaCount: 1
     service:
       annotations: {} # Evaluated as template
       type: ClusterIP
@@ -175,9 +182,12 @@ server:
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: {}
+    podDisruptionBudget: {}
 
   history:
-    # replicaCount: 1
     service:
       # type: ClusterIP
       port: 7234
@@ -194,9 +204,12 @@ server:
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: {}
+    podDisruptionBudget: {}
 
   matching:
-    # replicaCount: 1
     service:
       # type: ClusterIP
       port: 7235
@@ -213,9 +226,12 @@ server:
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: {}
+    podDisruptionBudget: {}
 
   worker:
-    # replicaCount: 1
     service:
       # type: ClusterIP
       port: 7239
@@ -232,12 +248,16 @@ server:
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: {}
+    podDisruptionBudget: {}
 
 admintools:
   enabled: true
   image:
     repository: temporalio/admin-tools
-    tag: 1.20.1
+    tag: 1.20.3
     pullPolicy: IfNotPresent
 
   service:
@@ -250,6 +270,11 @@ admintools:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  additionalEnv: []
+  resources: {}
+  containerSecurityContext: {}
+  securityContext: {}
+  podDisruptionBudget: {}
 
 web:
   enabled: true
@@ -265,7 +290,7 @@ web:
 
   image:
     repository: temporalio/ui
-    tag: 2.9.0
+    tag: 2.15.0
     pullPolicy: IfNotPresent
 
   service:
@@ -314,6 +339,12 @@ web:
 
   affinity: {}
 
+  additionalEnv: []
+
+  containerSecurityContext: {}
+  
+  securityContext: {}
+
 schema:
   setup:
     enabled: true
@@ -323,6 +354,9 @@ schema:
     backoffLimit: 100
   elastic:
     enabled: false
+  resources: {}
+  containerSecurityContext: {}
+  securityContext: {}
 
 elasticsearch:
   enabled: true
